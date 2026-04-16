@@ -23,7 +23,22 @@ jobs:
             rm -rf $TARGET_DIR
             mkdir -p $TARGET_DIR
             cd $TARGET_DIR
+
+            # 1. Clone code
             git clone -b feat/NinedevNestJs https://github.com/Trhgam/self-taught-NestJs-be.git .
-            cd nest-tutorial
-            docker compose down || true
-            docker compose up -d --build
+
+            # 2. Tìm vị trí file docker-compose.yml và nhảy vào
+            COMPOSE_PATH=$(find . -name "docker-compose.yml" -printf '%h' -quit)
+
+            if [ -n "$COMPOSE_PATH" ]; then
+              echo "Found docker-compose in: $COMPOSE_PATH"
+              cd "$COMPOSE_PATH"
+              
+              # 3. Chạy Docker
+              # Thử dùng 'docker compose' (V2), nếu fail sẽ thử 'docker-compose' (V1)
+              (docker compose down || docker-compose down || true)
+              (docker compose up -d --build || docker-compose up -d --build)
+            else
+              echo "LỖI: Không tìm thấy file docker-compose.yml!"
+              exit 1
+            fi
