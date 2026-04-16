@@ -1,0 +1,27 @@
+name: Deploy NestJS Project
+on:
+  push:
+    branches: [main]
+    paths:
+      - "nest-tutorial/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: 103.161.16.77
+          username: root
+          port: 26266
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/my-nextjs-app
+            git pull origin main
+            cd nest-tutorial
+            # Chạy build lại container NestJS
+            docker compose up -d --build
