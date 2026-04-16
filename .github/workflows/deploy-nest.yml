@@ -37,7 +37,7 @@ jobs:
               # 3. Tạo file .env ảo để tránh lỗi Docker không tìm thấy file
               if [ ! -f .env ]; then
                 touch .env
-                echo "PORT=3000" >> .env
+                echo "PORT=3001" >> .env
               fi
 
               # 4. Chạy Docker (Sử dụng Docker V2 chuẩn server bạn)
