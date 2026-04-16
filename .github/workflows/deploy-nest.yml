@@ -25,7 +25,7 @@ jobs:
             cd $TARGET_DIR
 
             # 1. Clone code
-            git clone -b feat/NinedevNestJs https://github.com/Trhgam/self-taught-NestJs-be.git .
+            git clone --recursive -b feat/NinedevNestJs https://github.com/Trhgam/self-taught-NestJs-be.git .
 
             # 2. Tìm vị trí file docker-compose.yml và nhảy vào
             COMPOSE_PATH=$(find . -name "docker-compose.yml" -printf '%h' -quit)
