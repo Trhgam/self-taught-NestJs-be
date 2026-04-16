@@ -4,6 +4,6 @@ services:
     container_name: nest_tutorial_api
     restart: always
     ports:
-      - '4000:3001' # Máy ngoài truy cập port 4000, trong Docker chạy 3001
+      - '7320:3001' # Máy ngoài truy cập port 732005, trong Docker chạy 3001
     env_file:
       - .env
