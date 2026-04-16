@@ -9,7 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # Cập nhật lên v4 cho hết cảnh báo vàng
+        with:
+          ref: feat/NinedevNestJs
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@master
@@ -19,6 +21,7 @@ jobs:
           port: 26266
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            # Đoạn script bên dưới giữ nguyên như cũ
             mkdir -p /var/www/nest-tutorial-app
             cd /var/www/nest-tutorial-app
             if [ ! -d ".git" ]; then
