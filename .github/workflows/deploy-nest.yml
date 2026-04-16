@@ -1,7 +1,7 @@
 name: Deploy NestJS Project
 on:
   push:
-    branches: [main]
+    branches: [feat/NinedevNestJs]
     paths:
       - "nest-tutorial/**"
 
