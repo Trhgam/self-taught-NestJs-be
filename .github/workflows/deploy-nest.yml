@@ -19,21 +19,14 @@ jobs:
           port: 26266
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # 1. Tạo thư mục nếu chưa có và đi vào
+            # 1. Dọn dẹp dứt điểm: Xóa thư mục cũ nếu có để tránh lỗi Git kẹt
+            rm -rf /var/www/nest-tutorial-app
             mkdir -p /var/www/nest-tutorial-app
             cd /var/www/nest-tutorial-app
 
-            # 2. Sửa lỗi bảo mật Git (Lỗi exit code 128)
-            git config --global --add safe.directory /var/www/nest-tutorial-app
+            # 2. Clone mới hoàn toàn (Cách này bỏ qua mọi lỗi safe directory hay xung đột file)
+            git clone -b feat/NinedevNestJs https://github.com/Trhgam/self-taught-NestJs-be.git .
 
-            # 3. Lấy code mới nhất
-            if [ ! -d ".git" ]; then
-              git clone -b feat/NinedevNestJs https://github.com/Trhgam/self-taught-NestJs-be.git .
-            else
-              git fetch origin feat/NinedevNestJs
-              git reset --hard origin/feat/NinedevNestJs
-            fi
-
-            # 4. Vào thư mục dự án và chạy Docker
+            # 3. Vào folder và chạy Docker
             cd nest-tutorial
             docker compose up -d --build
