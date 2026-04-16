@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4 # Update lên v4 cho mới
+        uses: actions/checkout@v4
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@master
@@ -19,12 +19,14 @@ jobs:
           port: 26266
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            # 1. Tạo thư mục nếu chưa có và đi vào
             mkdir -p /var/www/nest-tutorial-app
             cd /var/www/nest-tutorial-app
 
-            # Sửa lỗi exit code 128 bằng cách cấu hình safe directory
+            # 2. Sửa lỗi bảo mật Git (Lỗi exit code 128)
             git config --global --add safe.directory /var/www/nest-tutorial-app
 
+            # 3. Lấy code mới nhất
             if [ ! -d ".git" ]; then
               git clone -b feat/NinedevNestJs https://github.com/Trhgam/self-taught-NestJs-be.git .
             else
@@ -32,5 +34,6 @@ jobs:
               git reset --hard origin/feat/NinedevNestJs
             fi
 
+            # 4. Vào thư mục dự án và chạy Docker
             cd nest-tutorial
             docker compose up -d --build
