@@ -24,20 +24,25 @@ jobs:
             mkdir -p $TARGET_DIR
             cd $TARGET_DIR
 
-            # 1. Clone code
+            # 1. Clone code kèm submodule
             git clone --recursive -b feat/NinedevNestJs https://github.com/Trhgam/self-taught-NestJs-be.git .
 
-            # 2. Tìm vị trí file docker-compose.yml và nhảy vào
+            # 2. Tìm vị trí file docker-compose.yml
             COMPOSE_PATH=$(find . -name "docker-compose.yml" -printf '%h' -quit)
 
             if [ -n "$COMPOSE_PATH" ]; then
               echo "Found docker-compose in: $COMPOSE_PATH"
               cd "$COMPOSE_PATH"
               
-              # 3. Chạy Docker
-              # Thử dùng 'docker compose' (V2), nếu fail sẽ thử 'docker-compose' (V1)
-              (docker compose down || docker-compose down || true)
-              (docker compose up -d --build || docker-compose up -d --build)
+              # 3. Tạo file .env ảo để tránh lỗi Docker không tìm thấy file
+              if [ ! -f .env ]; then
+                touch .env
+                echo "PORT=3000" >> .env
+              fi
+
+              # 4. Chạy Docker (Sử dụng Docker V2 chuẩn server bạn)
+              docker compose down || true
+              docker compose up -d --build
             else
               echo "LỖI: Không tìm thấy file docker-compose.yml!"
               exit 1
