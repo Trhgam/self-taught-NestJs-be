@@ -1,34 +1,7 @@
-name: Deploy NestJS Project
-on:
-  push:
-    branches:
-      - feat/NinedevNestJs
-    paths:
-      - "nest-tutorial/**"
-
+name: Test Gấm
+on: [push]
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@master
-        with:
-          host: 103.161.16.77
-          username: root
-          port: 26266
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            mkdir -p /var/www/nest-tutorial-app
-            cd /var/www/nest-tutorial-app
-            if [ ! -d ".git" ]; then
-              git clone -b feat/NinedevNestJs https://github.com/Trhgam/self-taught-NestJs-be.git .
-            else
-              git fetch origin feat/NinedevNestJs
-              git checkout feat/NinedevNestJs
-              git pull origin feat/NinedevNestJs
-            fi
-            cd nest-tutorial
-            docker compose up -d --build
+      - run: echo "Actions da song roi Gam oi!"
