@@ -19,14 +19,11 @@ jobs:
           port: 26266
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # 1. Dọn dẹp dứt điểm: Xóa thư mục cũ nếu có để tránh lỗi Git kẹt
-            rm -rf /var/www/nest-tutorial-app
-            mkdir -p /var/www/nest-tutorial-app
-            cd /var/www/nest-tutorial-app
-
-            # 2. Clone mới hoàn toàn (Cách này bỏ qua mọi lỗi safe directory hay xung đột file)
+            TARGET_DIR="/var/www/nest-tutorial-app"
+            rm -rf $TARGET_DIR
+            mkdir -p $TARGET_DIR
+            cd $TARGET_DIR
             git clone -b feat/NinedevNestJs https://github.com/Trhgam/self-taught-NestJs-be.git .
-
-            # 3. Vào folder và chạy Docker
             cd nest-tutorial
+            docker compose down || true
             docker compose up -d --build
