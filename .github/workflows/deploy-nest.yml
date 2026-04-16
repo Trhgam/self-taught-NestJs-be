@@ -1,7 +1,8 @@
 name: Deploy NestJS Project
 on:
   push:
-    branches: [feat/NinedevNestJs]
+    branches:
+      - feat/NinedevNestJs
     paths:
       - "nest-tutorial/**"
 
@@ -20,11 +21,8 @@ jobs:
           port: 26266
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Tạo và vào thư mục dự án Nest
             mkdir -p /var/www/nest-tutorial-app
             cd /var/www/nest-tutorial-app
-
-            # Kiểm tra và kéo code đúng nhánh
             if [ ! -d ".git" ]; then
               git clone -b feat/NinedevNestJs https://github.com/Trhgam/self-taught-NestJs-be.git .
             else
@@ -32,7 +30,5 @@ jobs:
               git checkout feat/NinedevNestJs
               git pull origin feat/NinedevNestJs
             fi
-
-            # Vào folder chứa code và restart Docker
             cd nest-tutorial
             docker compose up -d --build
